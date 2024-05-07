@@ -6,6 +6,9 @@ import seaborn as sns
 # Load the data
 data = pd.read_csv("book_data.csv")
 
+# Ensure the 'Rating' column is treated as categorical with a specific order
+data['Rating'] = pd.Categorical(data['Rating'], categories=['One', 'Two', 'Three', 'Four', 'Five'], ordered=True)
+
 # Display the data
 st.title('Book Data Visualization')
 
@@ -19,7 +22,7 @@ st.pyplot(fig)
 
 # Visualize the number of books with each rating
 st.subheader('Jumlah Buku dengan Setiap Rating:')
-rating_counts = data['Rating'].value_counts()
+rating_counts = data['Rating'].value_counts().sort_index()  # Ensure the index order is sorted
 fig, ax = plt.subplots(figsize=(8, 6))
 ax.bar(rating_counts.index, rating_counts.values, color='lightgreen', edgecolor='black')
 ax.set_xlabel('Rating')
@@ -34,4 +37,3 @@ sns.barplot(x='Rating', y='Harga', data=average_price_by_rating, palette='viridi
 ax.set_xlabel('Rating')
 ax.set_ylabel('Rata-rata Harga ($)')
 st.pyplot(fig)
-
